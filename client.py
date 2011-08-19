@@ -32,7 +32,7 @@ Input = namedtuple("Input", INPUT_FIELDS)
 
 # Get network data from config file
 net_cfg = configparser.ConfigParser()
-net_cfg.read("network.conf")
+net_cfg.read("fake_wpilib/network.conf")
 UDP_OUT_IP   = net_cfg.get("Network", "VIRSYS_IP")
 UDP_OUT_PORT = net_cfg.getint("Network", "VIRSYS_RECV_PORT")
 UDP_IN_PORT  = net_cfg.getint("Network", "LOCAL_RECV_PORT")
@@ -40,7 +40,7 @@ UDP_IN_PORT  = net_cfg.getint("Network", "LOCAL_RECV_PORT")
 # Read port numbers for robot I/O
 # User configures port numbers to match sensors and actuators on the real robot
 port_cfg = configparser.ConfigParser()
-port_cfg.read("cRIO_ports.conf")
+port_cfg.read("fake_wpilib/cRIO_ports.conf")
 ports = {}
 for section in port_cfg.sections():
     ports[section] = {}

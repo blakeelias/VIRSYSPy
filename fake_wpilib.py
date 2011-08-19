@@ -1,10 +1,10 @@
-import client
+from . import client
 import configparser
 import time
 import threading
 
 torque_cfg = configparser.ConfigParser()
-torque_cfg.read("motorTorques.conf")
+torque_cfg.read("fake_wpilib/motorTorques.conf")
 
 torques = {}
 for motor in torque_cfg.options("Torques"):
