@@ -419,7 +419,7 @@ class PIDController(threading.Thread):
 
             self.m_pidOutput.PIDWrite(self.m_result)
 
-            print("err:\t", self.m_error, "\t Output:\t", self.m_result)
+            #print("err:\t", self.m_error, "\t Output:\t", self.m_result)
             
     def run(self):
         while 1:
