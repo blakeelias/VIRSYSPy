@@ -4,7 +4,7 @@ import socket
 import struct
 import threading
 from collections import namedtuple
-from ctypes import *
+from ctypes import c_float, sizeof
 import configparser
 
 # Set up input/output structures
