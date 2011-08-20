@@ -60,6 +60,8 @@ class SendOutput(threading.Thread):
         out_init_vals = dict([field, 0.0] for field in OUTPUT_FIELDS)
         self.out_tuple = Output(**out_init_vals)
         self.format_str = "=" + "f" * len(OUTPUT_FIELDS)
+        self.sock = socket.socket( socket.AF_INET, # Internet
+                                   socket.SOCK_DGRAM ) # UDP
         threading.Thread.__init__(self)
 
     def run(self):
@@ -68,9 +70,7 @@ class SendOutput(threading.Thread):
         """
         while True:
             message = struct.pack(self.format_str, *self.out_tuple)
-            sock = socket.socket( socket.AF_INET, # Internet
-                                  socket.SOCK_DGRAM ) # UDP
-            sock.sendto( message, (UDP_OUT_IP, UDP_OUT_PORT) )
+            self.sock.sendto( message, (UDP_OUT_IP, UDP_OUT_PORT) )
             self._update_buffer(time = self.out_tuple.time+1)
 
     def _update_buffer(self, **keywords):
