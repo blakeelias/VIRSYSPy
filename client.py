@@ -62,6 +62,7 @@ class SendOutput(threading.Thread):
         self.format_str = "=" + "f" * len(OUTPUT_FIELDS)
         self.sock = socket.socket( socket.AF_INET, # Internet
                                    socket.SOCK_DGRAM ) # UDP
+        self.out_lock = threading.Lock()
         threading.Thread.__init__(self)
 
     def run(self):
@@ -69,9 +70,10 @@ class SendOutput(threading.Thread):
         Continuously flush Output buffer to VIRSYS
         """
         while True:
-            message = struct.pack(self.format_str, *self.out_tuple)
+            with self.out_lock:
+                message = struct.pack(self.format_str, *self.out_tuple)
+                self._update_buffer(time = self.out_tuple.time+1)
             self.sock.sendto( message, (UDP_OUT_IP, UDP_OUT_PORT) )
-            self._update_buffer(time = self.out_tuple.time+1)
 
     def _update_buffer(self, **keywords):
         """
@@ -83,7 +85,8 @@ class SendOutput(threading.Thread):
         """
         Store a new output value to a given port number.
         """
-        self._update_buffer(**{ports[type_name][port] : value})
+        with self.out_lock:
+            self._update_buffer(**{ports[type_name][port] : value})
 
 class ReceiveInput(threading.Thread):
     """
