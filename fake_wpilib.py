@@ -4,7 +4,8 @@ import time
 import threading
 
 torque_cfg = configparser.ConfigParser()
-torque_cfg.read("fake_wpilib/motorTorques.conf")
+# find the subdirectory with this library and config files
+torque_cfg.read(__name__.split(".")[0] + "/motorTorques.conf")
 
 torques = {}
 for motor in torque_cfg.options("Torques"):
